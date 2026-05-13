@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Yallah — Darija app · designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="primitives.jsx"></script>
+<script type="text/babel" src="screens-onboarding.jsx"></script>
+<script type="text/babel" src="screens-home.jsx"></script>
+<script type="text/babel" src="screens-lesson.jsx"></script>
+<script type="text/babel" src="screens-system.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryHue": 14,
+  "zelligeIntensity": 30,
+  "script": "both",
+  "mascotOutfit": "none",
+  "darkHero": false,
+  "appName": "Yallah"
+}/*EDITMODE-END*/;
+
+// ─── Phone frame wrapper (iPhone 15 — 390x844) ────────────────
+function Phone({ children, dark = false, label }) {
+  return (
+    <div style={{ width: 390, height: 844, borderRadius: 50, overflow: 'hidden', position: 'relative',
+      background: dark ? '#15131A' : '#FBF6EE',
+      boxShadow: '0 30px 60px rgba(27,27,31,0.18), 0 0 0 12px #1B1B1F, 0 0 0 13px rgba(255,255,255,0.05)',
+    }}>
+      {/* dynamic island */}
+      <div style={{ position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)',
+        width: 122, height: 36, borderRadius: 22, background: '#000', zIndex: 100, pointerEvents: 'none' }}/>
+      {/* status bar overlay */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 54, zIndex: 80,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '18px 28px 0', pointerEvents: 'none' }}>
+        <div style={{ fontSize: 16, fontWeight: 600, color: dark ? '#fff' : '#1B1B1F', fontFamily: '-apple-system, "SF Pro", system-ui' }}>9:41</div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', color: dark ? '#fff' : '#1B1B1F' }}>
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="3" height="5" rx="0.6"/><rect x="4.5" y="4" width="3" height="7" rx="0.6"/><rect x="9" y="2" width="3" height="9" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6"/></svg>
+          <svg width="15" height="11" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z"/><path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z"/><circle cx="8.5" cy="10.5" r="1.5"/></svg>
+          <svg width="25" height="12" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke="currentColor" strokeOpacity="0.4" fill="none"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill="currentColor" fillOpacity="0.5"/></svg>
+        </div>
+      </div>
+      {children}
+      {/* home indicator */}
+      <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+        width: 134, height: 5, borderRadius: 3, background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(27,27,31,0.35)', zIndex: 100, pointerEvents: 'none' }}/>
+    </div>
+  );
+}
+
+// Common artboard size: phone needs +24 padding
+const A_W = 438, A_H = 892;
+
+// ─── Interactive lesson prototype (single artboard) ────────────
+function InteractiveLessonFlow() {
+  const [step, setStep] = React.useState(0);
+  // 0 home, 1 listen, 2 build, 3 speak, 4 complete
+  const screens = [
+    <ScrHomePath/>,
+    <ScrLessonListenMatch/>,
+    <ScrLessonBuild/>,
+    <ScrLessonSpeak/>,
+    <ScrLessonComplete/>,
+  ];
+  const labels = ['Home', 'Listen & match', 'Build sentence', 'Speak it', 'Complete!'];
+  return (
+    <div style={{ width: 460, height: 980, background: '#fff', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px 0 0' }}>
+      <Phone>{screens[step]}</Phone>
+      {/* prototype controls — outside phone */}
+      <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: '#1B1B1F', borderRadius: 999 }}>
+        <button onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0} style={{ width: 28, height: 28, border: 'none', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: 999, cursor: step === 0 ? 'default' : 'pointer', fontSize: 16, opacity: step === 0 ? 0.4 : 1 }}>‹</button>
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', fontFamily: 'Sora, system-ui', minWidth: 130, textAlign: 'center' }}>{step + 1} / {screens.length} · {labels[step]}</div>
+        <button onClick={() => setStep(Math.min(screens.length - 1, step + 1))} disabled={step === screens.length - 1} style={{ width: 28, height: 28, border: 'none', background: TOKENS.terracotta, color: '#fff', borderRadius: 999, cursor: step === screens.length - 1 ? 'default' : 'pointer', fontSize: 16, opacity: step === screens.length - 1 ? 0.4 : 1 }}>›</button>
+      </div>
+      <div style={{ marginTop: 8, fontSize: 11, color: TOKENS.ink3, fontWeight: 600, fontFamily: 'Sora, system-ui' }}>Tap ‹ ›  to step through the flow</div>
+    </div>
+  );
+}
+
+// ─── Main App ────────────────────────────────────────────────
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // dynamic theme override based on tweaks
+  React.useEffect(() => {
+    // hue shift - generate primary
+    if (t.primaryHue !== 14) {
+      const root = document.documentElement;
+      root.style.setProperty('--brand-hue', t.primaryHue);
+    }
+  }, [t.primaryHue]);
+
+  // recompute terracotta from hue if changed (apply via inline style override on key elements via CSS var would require refactor; we keep simple)
+  const W = (Comp, props = {}) => (
+    <div style={{ width: A_W, height: A_H, padding: 24, background: '#FBF6EE', borderRadius: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Phone dark={props.dark}><Comp {...props}/></Phone>
+    </div>
+  );
+
+  return (
+    <>
+      <DesignCanvas>
+        {/* INTRO POSTIT */}
+        <DCSection id="intro" title="Yallah — Darija app" subtitle="A joyful, zellige-inspired Moroccan language app · all 10 screens · iPhone 15 (390×844) · light + dark + design system">
+          <DCArtboard id="brief" label="Read me first" width={520} height={A_H}>
+            <div style={{ width: '100%', height: '100%', background: '#FBF6EE', padding: 36, position: 'relative', overflow: 'hidden' }}>
+              <ZelligeBg color={TOKENS.terracotta} opacity={0.06} size={120}/>
+              <div style={{ position: 'relative' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                  <ZelligeStar size={56} fill={TOKENS.terracotta}/>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: TOKENS.terracotta, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'Sora, system-ui' }}>Working name</div>
+                    <div style={{ fontSize: 36, fontWeight: 900, color: TOKENS.ink, letterSpacing: -0.8, lineHeight: 1, fontFamily: 'Sora, system-ui' }}>Yallah</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 14, color: TOKENS.ink2, lineHeight: 1.55, marginBottom: 18 }}>"Yallah" — let's go. Short, energetic, and one of the first words travelers hear. Alternatives below.</div>
+                <div style={{ display: 'grid', gap: 8, marginBottom: 22 }}>
+                  {[
+                    { name: 'Yallah', tag: 'Primary', sub: 'Energetic, instantly Moroccan, two syllables.' },
+                    { name: 'Mzyan', tag: 'Alt 1', sub: '"Good / nice." Praise-loop framing — every lesson rewards mzyan.' },
+                    { name: 'Atay', tag: 'Alt 2', sub: 'Mint tea — daily ritual metaphor, pairs with mascot.' },
+                  ].map(o => (
+                    <div key={o.name} style={{ padding: '10px 14px', background: '#fff', borderRadius: 12, border: `1px solid ${TOKENS.hairline}`, display: 'flex', alignItems: 'baseline', gap: 12 }}>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: TOKENS.ink3, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Sora, system-ui', minWidth: 56 }}>{o.tag}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 18, fontWeight: 800, color: TOKENS.ink, fontFamily: 'Sora, system-ui' }}>{o.name}</div>
+                        <div style={{ fontSize: 12, color: TOKENS.ink3, marginTop: 1 }}>{o.sub}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: TOKENS.ink3, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Sora, system-ui', marginBottom: 8 }}>System decisions</div>
+                <ul style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.55, paddingLeft: 18, margin: 0 }}>
+                  <li><strong>Mascot</strong> — <em>Atay</em>, a tea glass with a mint sprig. Original geometric character (no copyrighted reference).</li>
+                  <li><strong>Geometry</strong> — 8-point zellige stars + hexagons + 12-point rosettes carry the entire system: nodes, badges, shop tiles.</li>
+                  <li><strong>Script</strong> — Latin transliteration + Tajawal Arabic shown stacked by default; toggle in Settings.</li>
+                  <li><strong>Tone</strong> — Sprinkled bilingual ("Mzyan!", "Yallah", "Wash nsiti?") — never wall-to-wall.</li>
+                  <li><strong>Press</strong> — every primary button has a 4px 3D shadow. Reanimated press-down + Haptics.</li>
+                </ul>
+                <div style={{ marginTop: 20, padding: '12px 14px', background: TOKENS.saffron, color: TOKENS.ink, borderRadius: 12, fontSize: 12, fontWeight: 700, fontFamily: 'Sora, system-ui', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 18 }}>👉</span> Toggle <strong>Tweaks</strong> in the toolbar to swap script, mascot outfit, zellige intensity, and dark mode.
+                </div>
+              </div>
+            </div>
+          </DCArtboard>
+
+          <DCArtboard id="prototype" label="① Interactive lesson flow" width={460} height={980}>
+            <InteractiveLessonFlow/>
+          </DCArtboard>
+        </DCSection>
+
+        {/* ONBOARDING */}
+        <DCSection id="onboarding" title="① Onboarding" subtitle="Three slides · skip available · single CTA">
+          <DCArtboard id="ob1" label="Slide 1 · Why Darija" width={A_W} height={A_H}>{W(ScrOnboarding1)}</DCArtboard>
+          <DCArtboard id="ob2" label="Slide 2 · Meet Atay" width={A_W} height={A_H}>{W(ScrOnboarding2)}</DCArtboard>
+          <DCArtboard id="ob3" label="Slide 3 · Choose reason" width={A_W} height={A_H}>{W(ScrOnboarding3)}</DCArtboard>
+        </DCSection>
+
+        {/* QUIZ */}
+        <DCSection id="quiz" title="② Placement quiz" subtitle="Chip-ordering question · hearts visible · 8-question flow">
+          <DCArtboard id="quiz1" label="Q3 · Build the sentence" width={A_W} height={A_H}>{W(ScrQuiz)}</DCArtboard>
+        </DCSection>
+
+        {/* HOME */}
+        <DCSection id="home" title="③ Home / Path — hero screen" subtitle="Winding learning path · streak · daily ring · hearts. Light + dark.">
+          <DCArtboard id="home-light" label="Light mode" width={A_W} height={A_H}>{W(ScrHomePath)}</DCArtboard>
+          <DCArtboard id="home-dark" label="Dark mode" width={A_W} height={A_H}>{W(ScrHomePath, { dark: true })}</DCArtboard>
+        </DCSection>
+
+        {/* UNITS — accessible from Home */}
+        <DCSection id="units" title="③ b — Units / Course overview" subtitle="Tap the orange unit pill at the top of Home to land here. Full course at-a-glance.">
+          <DCArtboard id="units-light" label="Units · light" width={A_W} height={A_H}>{W(ScrUnits)}</DCArtboard>
+          <DCArtboard id="units-dark" label="Units · dark" width={A_W} height={A_H}>{W(ScrUnits, { dark: true })}</DCArtboard>
+          <DCArtboard id="units-howto" label="How to get here" width={420} height={A_H}>
+            <div style={{ width: '100%', height: '100%', background: '#FBF6EE', padding: 32, position: 'relative', overflow: 'hidden' }}>
+              <ZelligeBg color={TOKENS.terracotta} opacity={0.06} size={110}/>
+              <div style={{ position: 'relative' }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: TOKENS.terracotta, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'Sora, system-ui' }}>Entry point</div>
+                <div style={{ fontSize: 26, fontWeight: 900, color: TOKENS.ink, letterSpacing: -0.5, lineHeight: 1.05, marginTop: 4, fontFamily: 'Sora, system-ui' }}>How to access the Units screen</div>
+
+                <div style={{ marginTop: 18, padding: 14, background: '#fff', borderRadius: 14, border: `1px solid ${TOKENS.hairline}` }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: TOKENS.ink3, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Sora, system-ui', marginBottom: 8 }}>Primary path</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {[
+                      { n: '1', t: 'Open Home / Path', d: 'Default screen after launch.' },
+                      { n: '2', t: 'Tap the orange Unit pill', d: '"Unit 2 · The Medina" at the top — now has a › chevron.' },
+                      { n: '3', t: 'Land on Units', d: 'Full course list with progress + Continue/Start CTAs.' },
+                    ].map(s => (
+                      <div key={s.n} style={{ display: 'flex', gap: 10 }}>
+                        <div style={{ width: 24, height: 24, borderRadius: 8, background: TOKENS.terracotta, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, fontFamily: 'Sora, system-ui', flexShrink: 0 }}>{s.n}</div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 13, fontWeight: 800, color: TOKENS.ink, fontFamily: 'Sora, system-ui' }}>{s.t}</div>
+                          <div style={{ fontSize: 12, color: TOKENS.ink3, marginTop: 1, lineHeight: 1.4 }}>{s.d}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ marginTop: 14, padding: 14, background: '#fff', borderRadius: 14, border: `1px solid ${TOKENS.hairline}` }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: TOKENS.ink3, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Sora, system-ui', marginBottom: 8 }}>Other entry points</div>
+                  <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: TOKENS.ink2, lineHeight: 1.55 }}>
+                    <li>From any unit-boss completion → "See all units" button</li>
+                    <li>Profile → Stats card → "Course progress" row</li>
+                    <li>Onboarding placement quiz result → "Your starting unit" CTA</li>
+                  </ul>
+                </div>
+
+                <div style={{ marginTop: 14, padding: 14, background: TOKENS.saffron, borderRadius: 14, color: TOKENS.ink }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Sora, system-ui', marginBottom: 4 }}>Expo note</div>
+                  <div style={{ fontSize: 12, lineHeight: 1.5, fontWeight: 600 }}>Route: <code style={{ background: 'rgba(0,0,0,0.12)', padding: '1px 6px', borderRadius: 4, fontFamily: 'Menlo, monospace', fontSize: 11 }}>/(tabs)/path/units</code>. Push transition with Reanimated shared element on the unit pill → header medallion.</div>
+                </div>
+              </div>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        {/* LESSONS */}
+        <DCSection id="lessons" title="④ Lesson variants" subtitle="Five exercise types — pair with the interactive flow above">
+          <DCArtboard id="l-listen" label="Listen & match" width={A_W} height={A_H}>{W(ScrLessonListenMatch)}</DCArtboard>
+          <DCArtboard id="l-pairs" label="Tap the pairs" width={A_W} height={A_H}>{W(ScrLessonPairs)}</DCArtboard>
+          <DCArtboard id="l-build" label="Build the sentence" width={A_W} height={A_H}>{W(() => <ScrLessonBuild script={t.script}/>)}</DCArtboard>
+          <DCArtboard id="l-speak" label="Speak it (mic)" width={A_W} height={A_H}>{W(ScrLessonSpeak)}</DCArtboard>
+          <DCArtboard id="l-story" label="Story · medina café" width={A_W} height={A_H}>{W(ScrLessonStory)}</DCArtboard>
+        </DCSection>
+
+        {/* COMPLETE */}
+        <DCSection id="complete" title="⑤ Lesson complete — hero celebration" subtitle="Confetti · coin shower · streak update · mascot dance">
+          <DCArtboard id="complete-1" label="Celebration screen" width={A_W} height={A_H}>{W(ScrLessonComplete)}</DCArtboard>
+        </DCSection>
+
+        {/* PROFILE */}
+        <DCSection id="profile" title="⑥ Profile / Stats" subtitle="Streak calendar · league rank · zellige badge grid · light + dark">
+          <DCArtboard id="profile-light" label="Light mode" width={A_W} height={A_H}>{W(ScrProfile)}</DCArtboard>
+          <DCArtboard id="profile-dark" label="Dark mode" width={A_W} height={A_H}>{W(ScrProfile, { dark: true })}</DCArtboard>
+        </DCSection>
+
+        {/* SHOP */}
+        <DCSection id="shop" title="⑦ Souk · Shop" subtitle="Mascot outfits · power-ups · skins. Drahem currency.">
+          <DCArtboard id="shop-1" label="Souk grid" width={A_W} height={A_H}>{W(ScrShop)}</DCArtboard>
+        </DCSection>
+
+        {/* LEADERBOARD */}
+        <DCSection id="league" title="⑧ Leaderboard / Leagues" subtitle="Bronze → Atlas → Sahara → Royal · weekly promotion">
+          <DCArtboard id="league-1" label="Atlas League" width={A_W} height={A_H}>{W(ScrLeaderboard)}</DCArtboard>
+        </DCSection>
+
+        {/* DAILY + SETTINGS */}
+        <DCSection id="modal" title="⑨ Daily challenge & ⑩ Settings" subtitle="Bottom-sheet modal + standard settings list">
+          <DCArtboard id="daily" label="Daily challenge sheet" width={A_W} height={A_H}>{W(ScrDailyChallenge)}</DCArtboard>
+          <DCArtboard id="settings" label="Settings · script preference" width={A_W} height={A_H}>{W(ScrSettings)}</DCArtboard>
+        </DCSection>
+
+        {/* DESIGN SYSTEM */}
+        <DCSection id="ds" title="⑪ Design system" subtitle="Tokens · components · motion notes for Expo handoff">
+          <DCArtboard id="ds-1" label="Reference sheet" width={1100} height={1700}>
+            <ScrDesignSystem/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCPostIt top={520} left={140} rotate={-3}>
+          Hero screens: <strong>Home / Path</strong> &amp; <strong>Lesson Complete</strong> got the extra polish. The path uses solid 8-point stars for normal nodes, hexagons for grammar, and a 12-point rosette for the boss.
+        </DCPostIt>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks · Yallah">
+        <TweakSection label="Localization"/>
+        <TweakRadio label="Script (Build lesson)" value={t.script} options={[
+          { value: 'latin', label: 'Latin' },
+          { value: 'both', label: 'Both' },
+          { value: 'arabic', label: 'Arabic' },
+        ]} onChange={v => setTweak('script', v)}/>
+        <TweakSection label="Mascot"/>
+        <TweakRadio label="Atay outfit" value={t.mascotOutfit} options={[
+          { value: 'none', label: 'None' },
+          { value: 'tarboush', label: 'Tarboush' },
+          { value: 'djellaba', label: 'Djellaba' },
+          { value: 'sunglasses', label: 'Shades' },
+        ]} onChange={v => setTweak('mascotOutfit', v)}/>
+        <TweakSection label="Visuals"/>
+        <TweakSlider label="Zellige intensity" value={t.zelligeIntensity} min={0} max={100} step={10} unit="%" onChange={v => setTweak('zelligeIntensity', v)}/>
+        <TweakSlider label="Primary hue" value={t.primaryHue} min={0} max={360} step={2} unit="°" onChange={v => setTweak('primaryHue', v)}/>
+        <TweakToggle label="Dark hero (home preview)" value={t.darkHero} onChange={v => setTweak('darkHero', v)}/>
+        <TweakSection label="Naming"/>
+        <TweakSelect label="App name" value={t.appName} options={['Yallah', 'Mzyan', 'Atay', 'Darija Daily']} onChange={v => setTweak('appName', v)}/>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
